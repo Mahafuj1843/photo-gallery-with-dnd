@@ -5,9 +5,20 @@ import './gallery.scss'
 const Gallery = () => {
     let [datas, setData] = useState(data)
     let [deleteitem, setDeleteitem] = useState([])
+    let imageRef = useRef()
     let dragItem = useRef(null)
     let dragOverItem = useRef(null)
-    
+
+
+    const previewImage = () => {
+        setData([...datas, {
+            id: datas.length + 1,
+            name: `img${datas.length + 1}`,
+            src: URL.createObjectURL(imageRef.files[0]),
+            isChecked: false
+        }])
+    }
+
     // Handle select and unselect image for deleting
     const onHandle = (e, i) => {
         let newArray = [...datas]
@@ -90,10 +101,11 @@ const Gallery = () => {
                         )
                     }
                     <div className={`image`}>
-                        <div className="add_image">
+                        <label for="file-input" className="add_image">
                             <i class="ri-image-add-fill"></i>
                             <span>Add Images</span>
-                        </div>
+                            <input ref={(i) => imageRef = i} onChange={previewImage} className="hidden" type="file" id="file-input" accept="image/*"></input>
+                        </label>
                     </div>
                 </div>
             </div>
